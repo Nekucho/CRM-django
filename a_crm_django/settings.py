@@ -1,5 +1,6 @@
 
 import os
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -11,7 +12,7 @@ TEMPLATES_DIR = BASE_DIR / 'a_crm_django' / 'templates'
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--o26l-@=4+%ow)al0%-vw!d@&o*l5%f(=#aijjx$$ln=f(##l2'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-local-dev-key-123')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -70,11 +71,13 @@ WSGI_APPLICATION = 'a_crm_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600
+    )
 }
 
 
